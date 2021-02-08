@@ -173,9 +173,7 @@ public class UIManager : MonoBehaviour
     //初始化加载（根UI窗体）canvas预设
     private void InitRootCanvasLoading()
     {
-        //Resources.Load();
         ResourcesMgr.GetInstance().LoadAsset(SysDefine.SYS_PATH_CANVAS, false);
-
     }
 
     /// <summary>

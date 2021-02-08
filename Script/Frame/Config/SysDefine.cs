@@ -39,12 +39,11 @@ public enum UIFormLucencyType
 
 #endregion
 
-public class SysDefine : MonoBehaviour {
+public class SysDefine
+{
     #region 系统常量
     //路径常量
     public const string SYS_PATH_CANVAS = "Canvas";
-    public const string SYS_PATH_UIFORMJSONINFO = "UIFormsConfigInfo";
-    public const string SYS_PATH_SYSCONFIGINFO = "SysConfigInfo";
     //标签常量
     public const string SYS_TAG_CANVAS = "_TagCanvas";
     public const string SYS_TAG_UICAMERA = "_TagUICamera";
@@ -55,13 +54,8 @@ public class SysDefine : MonoBehaviour {
     public const string SYS_NODE_POPUP = "PopUpPanel";
     public const string SYS_NODE_SCRIPTSMANAGER = "_UIScriptsHolder";
 
-    //UI窗体预设名称
-    public const string SYS_LOGIN_UIFORM = "LoginUIFormPanel";
-    public const string SYS_HEROINFO_UIFORM = "HeroInfoPanel";
-    public const string SYS_MAINCITY_UIFORM = "MainCityPanel";
-    public const string SYS_MARKET_UIFORM = "MarketUIPanel";
-    public const string SYS_SELECTHERO_UIFORM = "SelectHeroPanel";
-    public const string SYS_PROPDETAIL_UIFORM = "PropDetailUIPanel";
+    //json名称
+    public const string OutFoodJsonName = "outfood";
 
     #endregion
 

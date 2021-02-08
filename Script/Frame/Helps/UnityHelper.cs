@@ -1,13 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// UnityHelper帮助脚本
 /// 作用：
 ///     1.集成整个项目中通用的方法
 /// </summary>
-public class UnityHelper : MonoBehaviour {
+public class UnityHelper
+{
 
     /// <summary>
     /// 查找父节点下的子节点
@@ -42,7 +46,7 @@ public class UnityHelper : MonoBehaviour {
     /// <param name="goParent">父对象</param>
     /// <param name="childName">子对象名称</param>
     /// <returns></returns>
-    public static T GetChildNodeComponentScript<T>(GameObject goParent, string childName) where T:Component     //限定这个泛型是一个组件
+    public static T GetChildNodeComponentScript<T>(GameObject goParent, string childName) where T : Component     //限定这个泛型是一个组件
     {
         Transform searchTransform = null;       //查找结果
         searchTransform = FindTheChildNode(goParent, childName);
@@ -59,41 +63,6 @@ public class UnityHelper : MonoBehaviour {
     }
 
     /// <summary>
-    /// 给子节点添加脚本
-    /// </summary>
-    /// <typeparam name="T">泛型</typeparam>
-    /// <param name="goParen">对象</param>
-    /// <param name="childName">子对象名称</param>
-    /// <returns></returns>
-    public static T AddChildNodeComponent<T>(GameObject goParen, string childName) where T : Component
-    {
-        Transform searchTransform = null;       //查找子节点的结果
-        //查找特定子节点
-        searchTransform = FindTheChildNode(goParen, childName);
-
-        //如果查找成功，再考虑这个对象中是否已经存在了相同脚本，有就删除，没有就添加
-
-        if (searchTransform != null)
-        {
-            T[] componentScriptsArray = searchTransform.GetComponents<T>();
-
-            for (int i = 0; i < componentScriptsArray.Length; i++)
-            {
-                if(componentScriptsArray[i]!=null)
-                    Destroy(componentScriptsArray[i]);
-            }
-
-            return searchTransform.gameObject.AddComponent<T>();
-
-        }
-        //如果查找不成功，返回一个null
-        else
-        {
-            return null;
-        }
-    }
-
-    /// <summary>
     /// 给子节点添加父对象
     /// </summary>
     /// <param name="parentNode">父对象方位</param>
@@ -101,8 +70,48 @@ public class UnityHelper : MonoBehaviour {
     public static void AddChildNodeToParentNode(Transform parentNode, Transform childNode)
     {
         childNode.SetParent(parentNode);
-        childNode.localPosition=Vector3.zero;
-        childNode.localScale=Vector3.one;
-        childNode.localEulerAngles=Vector3.zero;
+        childNode.localPosition = Vector3.zero;
+        childNode.localScale = Vector3.one;
+        childNode.localEulerAngles = Vector3.zero;
     }
+
+    /// <summary>
+    /// 打开提示窗口
+    /// </summary>
+    /// <param name="content"></param>
+    /// <param name="okCallback"></param>
+    /// <param name="cancelCallback"></param>
+    public static void OpenAtlerWin(string content, UnityAction okCallback = null, UnityAction cancelCallback = null)
+    {
+        UIManager.GetInstance().ShowUIForm(EM_WinType.PopUpWindows);
+        PopUpWindows win = UIManager.GetInstance().GetWinForm(EM_WinType.PopUpWindows) as PopUpWindows;
+        if (win != null)
+        {
+            win.Init(content, okCallback, cancelCallback);
+        }
+    }
+
+    /// <summary>
+    /// 检索
+    /// </summary>
+    /// <param name="check">需要检索的字</param>
+    /// <param name="result">检索目标</param>
+    public static bool FuzzyCheck(string check, string result)
+    {
+        Regex regex = new Regex(check);
+        Match mat = regex.Match(result);
+        return mat.Success;
+    }
+
+    /// <summary>
+    /// 将字符串转换成时间格式
+    /// </summary>
+    /// <param name="date"></param>
+    /// <returns></returns>
+    public static DateTime ParseStrToDateTime(string date)
+    {
+        DateTime time = DateTime.Parse(date);
+        return time;
+    }
+
 }

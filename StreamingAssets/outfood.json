@@ -1,0 +1,12 @@
+﻿{
+    "1": {
+        "Adress": "广东广州",
+        "StoreName": "生蚝店",
+        "GoodFoodName":"烧生蚝-20;烤茄子-50",
+        "BadFoodName": "秋葵-20",
+        "Evaluate":"评价评价",
+        "Date":"2021-2",
+        "Star":3.2,
+        "Image": "1;2;3"
+    }
+}

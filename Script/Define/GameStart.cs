@@ -13,7 +13,9 @@ public class GameStart : MonoBehaviour
         ConfigMgr.GetInstance().InitData();
 
         DontDestroyOnLoad(this);
+        //初始化数据
         UIManager.GetInstance().Init();
+        OutFoodMgr.GetInstance().Model.Init();
 
         //打开主页
         UIManager.GetInstance().ShowUIForm(EM_WinType.MainUIPanel);

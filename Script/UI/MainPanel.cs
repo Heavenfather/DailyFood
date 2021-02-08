@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Manager;
-using Model;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -68,12 +67,6 @@ public class MainPanel : BaseUIForms
     public void OnOutClick()
     {
         // SceneManager.LoadScene("OutScene");
-        UIManager.GetInstance().ShowUIForm(EM_WinType.PopUpWindows);
-        PopUpWindows win = UIManager.GetInstance().GetWinForm(EM_WinType.PopUpWindows) as PopUpWindows;
-        if (win != null)
-        {
-            win.Init("打开了");
-        }
     }
     public void OnHomeClick()
     {

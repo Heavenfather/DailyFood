@@ -5,7 +5,6 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Model;
 
 namespace Manager
 {
@@ -99,7 +98,7 @@ namespace Manager
         {
             AddLog(logTxt);
             #if UNITY_EDITOR
-            EventMgr.GetInstance().Notifire(EventName.Event_ShowPanelLog, m_log);
+            EventMgr.GetInstance().NotifireEvent(EventName.Event_ShowPanelLog, m_log);
             #endif
         }
 
