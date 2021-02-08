@@ -12,5 +12,7 @@ public enum EM_WinType
     WinOutFoodMain,
     //添加出去吃的界面
     WinAddOutFood,
+    //添加食物
+    AddFoodPanel,
 
 }
