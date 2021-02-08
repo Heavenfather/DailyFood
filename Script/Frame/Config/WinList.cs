@@ -18,6 +18,8 @@ public class WinList
         dicUIResPath.Add(EM_WinType.PopUpWindows, path);
         path = PathMgr.GetInstance().GetResPath(EM_ResPathStyle.UI, "WinOutFoodMain");
         dicUIResPath.Add(EM_WinType.WinOutFoodMain, path);
+        path = PathMgr.GetInstance().GetResPath(EM_ResPathStyle.UI, "WinAddOutFood");
+        dicUIResPath.Add(EM_WinType.WinAddOutFood, path);
     }
 
 }

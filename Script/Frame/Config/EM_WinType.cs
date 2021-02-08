@@ -10,5 +10,7 @@ public enum EM_WinType
     PopUpWindows,
     //出去吃的主界面
     WinOutFoodMain,
+    //添加出去吃的界面
+    WinAddOutFood,
 
 }
