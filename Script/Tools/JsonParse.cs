@@ -16,7 +16,7 @@ public class JsonParse
     /// <returns>Objec类型的JsonData</returns>
     public static JsonData ParseToJsonData(string jsonName)
     {
-        string path = PathMgr.GetInstance().StreamPath + "/" + jsonName;
+        string path = PathMgr.GetInstance().StreamPath + "/" + jsonName +".json";
         if (PathMgr.GetInstance().CheckFile(path))
         {
             try

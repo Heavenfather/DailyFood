@@ -17,10 +17,15 @@ public class PopUpWindows : BaseUIForms
     UnityAction m_comfirmAction = null;
     UnityAction m_cancelAction = null;
 
-    private void Awake()
+    public override void InitUIType()
     {
         base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.Normal;
         base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
+    }
+
+    public override EM_WinType GetWinType()
+    {
+        return EM_WinType.PopUpWindows;
     }
 
     public override void Hiding()

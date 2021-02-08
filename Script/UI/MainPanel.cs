@@ -23,9 +23,15 @@ public class MainPanel : BaseUIForms
     #endregion
 
     #region Unity函数
-    private void Awake()
+    public override void InitUIType()
     {
         base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.HideOther;
+
+    }
+
+    public override EM_WinType GetWinType()
+    {
+        return EM_WinType.MainUIPanel;
     }
 
     private void Start()
@@ -66,7 +72,7 @@ public class MainPanel : BaseUIForms
     #region 点击事件
     public void OnOutClick()
     {
-        // SceneManager.LoadScene("OutScene");
+        UIManager.GetInstance().ShowUIForm(EM_WinType.WinOutFoodMain);
     }
     public void OnHomeClick()
     {
@@ -110,6 +116,7 @@ public class MainPanel : BaseUIForms
         m_logPanel.gameObject.SetActive(true);
         m_logText.text = logTxt;
     }
+
     #endregion
 
 }

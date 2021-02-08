@@ -6,7 +6,8 @@
         "BadFoodName": "秋葵-20",
         "Evaluate":"评价评价",
         "Date":"2021-2",
-        "Star":3.2,
+        "Star":"3.2",
+        "Line":"出行方式",
         "Image": "1;2;3"
     }
 }

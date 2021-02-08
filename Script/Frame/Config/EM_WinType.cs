@@ -8,5 +8,7 @@ public enum EM_WinType
     MainUIPanel,
     //通用的弹出提示窗口
     PopUpWindows,
+    //出去吃的主界面
+    WinOutFoodMain,
 
 }

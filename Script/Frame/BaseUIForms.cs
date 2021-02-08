@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using SUIFW;
+using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*UI窗体的父类
  * 功能：定义所有UI窗体的父类
@@ -14,10 +13,14 @@ using UnityEngine;
  *
  */
 
-public class BaseUIForms : MonoBehaviour
+public abstract class BaseUIForms : MonoBehaviour
 {
+    [SerializeField]
+    Button m_btnClose;
     //字段
     private UIType _CurrentUIType = new UIType();  //当前的UI类型
+
+    private UnityAction OnCloseAction;
 
     #region 窗口的四种状态
     /// <summary>
@@ -27,6 +30,19 @@ public class BaseUIForms : MonoBehaviour
     {
         get { return _CurrentUIType; }
         set { _CurrentUIType = value; }
+    }
+
+    public void Awake()
+    {
+        InitUIType();
+    }
+
+    public abstract void InitUIType();
+    public abstract EM_WinType GetWinType();
+
+    public virtual void OnCloseTodo()
+    {
+        CloseUIForm(GetWinType());
     }
 
     /// <summary>
@@ -39,6 +55,14 @@ public class BaseUIForms : MonoBehaviour
         if (_CurrentUIType.UIForm_Type == UIFormType.PopUp)
         {
             UIMaskManager.GetInstance().SetMaskWindow(this.gameObject, CurrentUIType.UIForm_Luceny);
+        }
+        if (m_btnClose != null && OnCloseAction == null)
+        {
+            m_btnClose.onClick.AddListener(OnCloseTodo);
+        }
+        if (m_btnClose != null && OnCloseAction != null)
+        {
+            m_btnClose.onClick.AddListener(OnCloseAction);
         }
     }
 
@@ -54,6 +78,15 @@ public class BaseUIForms : MonoBehaviour
         {
             UIMaskManager.GetInstance().CancelMaskWindow();
         }
+
+        if (m_btnClose != null && OnCloseAction == null)
+        {
+            m_btnClose.onClick.RemoveListener(OnCloseTodo);
+        }
+        if (m_btnClose != null && OnCloseAction != null)
+        {
+            m_btnClose.onClick.RemoveListener(OnCloseAction);
+        }
     }
 
     /// <summary>
@@ -66,6 +99,14 @@ public class BaseUIForms : MonoBehaviour
         if (_CurrentUIType.UIForm_Type == UIFormType.PopUp)
         {
             UIMaskManager.GetInstance().SetMaskWindow(this.gameObject, CurrentUIType.UIForm_Luceny);
+        }
+        if (m_btnClose != null && OnCloseAction == null)
+        {
+            m_btnClose.onClick.AddListener(OnCloseTodo);
+        }
+        if (m_btnClose != null && OnCloseAction != null)
+        {
+            m_btnClose.onClick.AddListener(OnCloseAction);
         }
     }
 
@@ -81,6 +122,15 @@ public class BaseUIForms : MonoBehaviour
     #endregion
 
     #region 封装子类常用方法
+    /// <summary>
+    /// 子类自定义的关闭方法
+    /// </summary>
+    /// <param name="func"></param>
+    protected void SetCloseToDo(UnityAction func)
+    {
+        OnCloseAction = func;
+    }
+
     /// <summary>
     /// 给按钮注册方法
     /// </summary>

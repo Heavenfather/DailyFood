@@ -2109,6 +2109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab71d2372ca67f46a9f7d7588a8a69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_btnClose: {fileID: 0}
   m_logText: {fileID: 1444328511927359209}
   m_logPanel: {fileID: 1444328512791938770}
   m_dropSelect: {fileID: 1444328513680325597}

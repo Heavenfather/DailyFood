@@ -44,9 +44,10 @@ public class OutFoodModel : Model
             string badFoodName = datas[i][OutFoodJsonEm.BadFoodName.ToString()].ToString();
             string evaluate = datas[i][OutFoodJsonEm.Evaluate.ToString()].ToString();
             string date = datas[i][OutFoodJsonEm.Date.ToString()].ToString();
-            float star = (float)datas[i][OutFoodJsonEm.Star.ToString()];
+            float star = float.Parse(datas[i][OutFoodJsonEm.Star.ToString()].ToString());
+            string line = datas[i][OutFoodJsonEm.Line.ToString()].ToString();
             string image = datas[i][OutFoodJsonEm.Image.ToString()].ToString();
-            OutFood food = new OutFood(key, adress, storeName, goodFoodName, badFoodName, evaluate, date, star, image);
+            OutFood food = new OutFood(key, adress, storeName, goodFoodName, badFoodName, evaluate, date, star,line, image);
             if (!m_dicOutFood.ContainsKey(key))
                 m_dicOutFood.Add(key, food);
         }
@@ -117,12 +118,12 @@ public class OutFoodModel : Model
     /// <param name="storeName"></param>
     /// <param name="foodName"></param>
     /// <param name="image"></param>
-    public void AddOutFood(string adress, string storeName, string goodFoodName, string badFoodName, string evaluate, string date, float star, string image)
+    public void AddOutFood(string adress, string storeName, string goodFoodName, string badFoodName, string evaluate, string date, float star,string line, string image)
     {
         //添加进来一条数据 索引加1
         V_OutFoodMaxIndex += 1;
 
-        OutFood food = new OutFood(V_OutFoodMaxIndex, adress, storeName, goodFoodName, badFoodName, evaluate, date, star, image);
+        OutFood food = new OutFood(V_OutFoodMaxIndex, adress, storeName, goodFoodName, badFoodName, evaluate, date, star,line, image);
         if (!m_dicOutFood.ContainsKey(V_OutFoodMaxIndex))
             m_dicOutFood.Add(V_OutFoodMaxIndex, food);
         //写入json数据
@@ -135,7 +136,8 @@ public class OutFoodModel : Model
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.BadFoodName.ToString()] = badFoodName;
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Evaluate.ToString()] = evaluate;
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Date.ToString()] = date;
-            m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Star.ToString()] = star;
+            m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Star.ToString()] = star.ToString();
+            m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Line.ToString()] = line;
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Image.ToString()] = image;
         }
     }
@@ -247,6 +249,10 @@ public class OutFood
     /// 图片名称
     /// </summary>
     public string V_Iamge = "";
+    /// <summary>
+    /// 出行路线
+    /// </summary>
+    public string V_Line = "";
     //每道菜的单价
     private Dictionary<string, float> m_dicFoodPrice = new Dictionary<string, float>();
 
@@ -262,7 +268,7 @@ public class OutFood
     /// <param name="date">日期</param>
     /// <param name="start">星级</param>
     /// <param name="image">图片</param>
-    public OutFood(int key, string adress, string storename, string goodFoodName, string badFoodName, string evaluate, string date, float star, string image)
+    public OutFood(int key, string adress, string storename, string goodFoodName, string badFoodName, string evaluate, string date, float star, string line, string image)
     {
         V_Key = key;
         V_Adress = adress;
@@ -272,6 +278,7 @@ public class OutFood
         V_Evaluate = evaluate;
         V_Date = UnityHelper.ParseStrToDateTime(date);
         V_Star = star;
+        V_Line = line;
         V_Iamge = image;
         //计算总价
         if (!string.IsNullOrEmpty(goodFoodName))
@@ -354,6 +361,7 @@ public enum OutFoodJsonEm
     Evaluate,
     Date,
     Star,
+    Line,
     Image,
 
 }
