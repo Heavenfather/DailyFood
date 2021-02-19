@@ -158,9 +158,9 @@ public class UIManager : MonoBehaviour
     /// <returns></returns>
     public BaseUIForms GetWinForm(EM_WinType winType)
     {
-        if (_DicCurrentUIForm.ContainsKey(winType))
+        if (_DicAllUiFormses.ContainsKey(winType))
         {
-            return _DicCurrentUIForm[winType];
+            return _DicAllUiFormses[winType];
         }
         else
         {

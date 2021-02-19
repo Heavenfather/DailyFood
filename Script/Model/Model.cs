@@ -7,7 +7,7 @@ public class Model : Notifier
     public virtual void Init(){}
     public virtual void Release(){}
 
-    public void Raise(string eventName, params object[] args)
+    protected void Raise(string eventName, params object[] args)
     {
         NotifireEvent(eventName,args);
     }

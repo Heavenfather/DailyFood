@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
+using Manager;
 
 /*UI窗体的父类
  * 功能：定义所有UI窗体的父类
@@ -129,6 +130,25 @@ public abstract class BaseUIForms : MonoBehaviour
     protected void SetCloseToDo(UnityAction func)
     {
         OnCloseAction = func;
+    }
+
+    /// <summary>
+    /// 绑定监听事件
+    /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="func"></param>
+    protected void BindEvent(string eventName, Notifier.StandardDelegate func)
+    {
+        EventMgr.GetInstance().AddEventHandle(eventName, func);
+    }
+    /// <summary>
+    /// 移除事件监听
+    /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="func"></param>
+    protected void UnBindEvent(string eventName, Notifier.StandardDelegate func)
+    {
+        EventMgr.GetInstance().RemoveEventHandle(eventName, func);
     }
 
     /// <summary>

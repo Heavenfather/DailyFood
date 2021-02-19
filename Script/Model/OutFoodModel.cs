@@ -47,7 +47,7 @@ public class OutFoodModel : Model
             float star = float.Parse(datas[i][OutFoodJsonEm.Star.ToString()].ToString());
             string line = datas[i][OutFoodJsonEm.Line.ToString()].ToString();
             string image = datas[i][OutFoodJsonEm.Image.ToString()].ToString();
-            OutFood food = new OutFood(key, adress, storeName, goodFoodName, badFoodName, evaluate, date, star,line, image);
+            OutFood food = new OutFood(key, adress, storeName, goodFoodName, badFoodName, evaluate, date, star, line, image);
             if (!m_dicOutFood.ContainsKey(key))
                 m_dicOutFood.Add(key, food);
         }
@@ -118,12 +118,12 @@ public class OutFoodModel : Model
     /// <param name="storeName"></param>
     /// <param name="foodName"></param>
     /// <param name="image"></param>
-    public void AddOutFood(string adress, string storeName, string goodFoodName, string badFoodName, string evaluate, string date, float star,string line, string image)
+    public void AddOutFood(string adress, string storeName, string goodFoodName, string badFoodName, string evaluate, string date, float star, string line, string image)
     {
         //添加进来一条数据 索引加1
         V_OutFoodMaxIndex += 1;
 
-        OutFood food = new OutFood(V_OutFoodMaxIndex, adress, storeName, goodFoodName, badFoodName, evaluate, date, star,line, image);
+        OutFood food = new OutFood(V_OutFoodMaxIndex, adress, storeName, goodFoodName, badFoodName, evaluate, date, star, line, image);
         if (!m_dicOutFood.ContainsKey(V_OutFoodMaxIndex))
             m_dicOutFood.Add(V_OutFoodMaxIndex, food);
         //写入json数据

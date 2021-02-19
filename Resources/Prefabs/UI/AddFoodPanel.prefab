@@ -85,7 +85,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &574966105173198118
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +364,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6281694423808909643}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6243714925001775530}
+        m_TargetAssemblyTypeName: AddFoodPanel, Assembly-CSharp
+        m_MethodName: OnComfirmClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &770358411636757908
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,6 +874,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_btnClose: {fileID: 4219057715108014462}
+  m_inputFoodName: {fileID: 3042320061989171241}
+  m_InputPrice: {fileID: 6172328697355243604}
+  m_toggleGood: {fileID: 6929262153773328864}
 --- !u!114 &7122675961585508875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,7 +1024,7 @@ GameObject:
   - component: {fileID: 7513464283161535443}
   - component: {fileID: 3042320061989171241}
   m_Layer: 5
-  m_Name: InputField
+  m_Name: InputFieldName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1302,7 +1317,7 @@ GameObject:
   - component: {fileID: 4768487031381485101}
   - component: {fileID: 6172328697355243604}
   m_Layer: 5
-  m_Name: InputField (1)
+  m_Name: InputFieldPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1410,13 +1425,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4768487031381485101}
   m_TextComponent: {fileID: 1170305402014037431}
   m_Placeholder: {fileID: 5068403061302682983}
-  m_ContentType: 0
+  m_ContentType: 3
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:

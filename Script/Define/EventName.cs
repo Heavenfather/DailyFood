@@ -3,5 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EventName
 {
-    public static string Event_ShowPanelLog = "ShowLogPanel";
+    public const string Event_ShowPanelLog = "ShowLogPanel";
+    public const string Event_AddOneOutFood = "AddOneOutFood";
 }

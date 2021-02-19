@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,10 +28,15 @@ public class WinAddOutFood : BaseUIForms
     [SerializeField]
     List<string> m_Years;
 
-    private List<GameObject> m_foodCells = new List<GameObject>();
+    private Dictionary<int, OutFoodPerCell> m_dicFoodCells = new Dictionary<int, OutFoodPerCell>();
+    /// <summary>
+    /// 添加菜的临时id
+    /// </summary>
+    private int m_tempId = 0;
 
     private void Start()
     {
+        base.BindEvent(EventName.Event_AddOneOutFood, AddOneFood);
         //构造年份数据
         List<Dropdown.OptionData> lst = new List<Dropdown.OptionData>();
         for (int i = 0; i < m_Years.Count; i++)
@@ -39,6 +45,14 @@ public class WinAddOutFood : BaseUIForms
             lst.Add(data);
         }
         m_dropdownYear.options = lst;
+    }
+
+
+    private void OnDestroy()
+    {
+        base.UnBindEvent(EventName.Event_AddOneOutFood, AddOneFood);
+        m_tempId = 0;
+        m_dicFoodCells.Clear();
     }
 
     public override EM_WinType GetWinType()
@@ -54,6 +68,32 @@ public class WinAddOutFood : BaseUIForms
         // LayoutRebuilder.ForceRebuildLayoutImmediate(m_outFoodPerCellParent.transform as RectTransform);
     }
 
+    private void AddOneFood(object[] args)
+    {
+        if (args.Length < 2)
+            return;
+        string name = (string)args[0];
+        string price = (string)args[1];
+        bool good = (bool)args[2];
+        string strState = good ? "好吃" : "不好吃";
+
+        //直接clone一个cell出来
+        GameObject go = Instantiate(m_outFoodPerCell, m_outFoodPerCellParent.transform);
+        go.SetActive(true);
+        OutFoodPerCell cell = go.GetComponent<OutFoodPerCell>();
+        if (cell != null)
+        {
+            string txt = "";
+            txt += name + "-";
+            txt += price + "-";
+            txt += strState;
+            cell.Init(m_tempId, txt);
+            m_dicFoodCells.Add(m_tempId, cell);
+            m_tempId++;
+        }
+
+    }
+
     public void OnComfirmClick()
     {
         // string year = m_Years[m_dropdownYear.value];
@@ -66,23 +106,6 @@ public class WinAddOutFood : BaseUIForms
     {
         //添加一道菜
         OpenUIForm(EM_WinType.AddFoodPanel);
-    }
-
-    public void Clear()
-    {
-        m_inputAdress.text = "";
-        m_inputEvaluate.text = "";
-        m_inputLine.text = "";
-        m_inputStar.text = "";
-        m_inputStoreName.text = "";
-        // if (m_foodCells.Count > 0)
-        // {
-        //     for (int i = 0; i < m_foodCells.Count; i++)
-        //     {
-        //         GameObject.Destroy(m_foodCells[i]);
-        //     }
-        //     m_foodCells.Clear();
-        // }
     }
 
 }
