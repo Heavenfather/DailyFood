@@ -13,7 +13,7 @@ public class UIMaskManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            _instance=new GameObject("_UIMaskManager").AddComponent<UIMaskManager>(); //为了保证这个脚本是挂载在一个对象上
+            _instance = new GameObject("_UIMaskManager").AddComponent<UIMaskManager>(); //为了保证这个脚本是挂载在一个对象上
         }
 
         return _instance;
@@ -36,7 +36,7 @@ public class UIMaskManager : MonoBehaviour
     void Awake()
     {
         //得到UI根节点对象、UI脚本根节点对象
-        _GoCanvasRoot=GameObject.FindGameObjectWithTag(SysDefine.SYS_TAG_CANVAS);
+        _GoCanvasRoot = GameObject.FindGameObjectWithTag(SysDefine.SYS_TAG_CANVAS);
         _TraUIScriptsHolder = UnityHelper.FindTheChildNode(_GoCanvasRoot, "_UIScriptsHolder");
 
         //得到顶层面板、遮罩面板
@@ -51,9 +51,9 @@ public class UIMaskManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError(GetType()+"UI摄像机为null，请检查!");
+            Debug.LogError(GetType() + "UI摄像机为null，请检查!");
         }
-        
+
     }
 
     /// <summary>
@@ -67,20 +67,20 @@ public class UIMaskManager : MonoBehaviour
         _GoTopPanel.transform.SetAsLastSibling();       //下移
         //启用遮罩窗体以及设置透明度
         switch (lucencyType)
-        { 
+        {
             case UIFormLucencyType.Lucency:             //完全透明 不能穿透
                 _GoMaskPanel.SetActive(true);
-                Color newColor1 = new Color(255/255,255 / 255, 255 / 255, 0 / 255);
+                Color newColor1 = new Color32(255, 255, 255, 1);
                 _GoMaskPanel.GetComponent<Image>().color = newColor1;
                 break;
             case UIFormLucencyType.Translucency:        //半透明  不能穿透
                 _GoMaskPanel.SetActive(true);
-                Color newColor2=new Color(255 / 255, 255 / 255, 255 / 255, 100 / 255);
+                Color newColor2 = new Color32(255, 255, 255, 150);
                 _GoMaskPanel.GetComponent<Image>().color = newColor2;
                 break;
             case UIFormLucencyType.ImPeneterabla:       //低透明度 不能穿透
                 _GoMaskPanel.SetActive(true);
-                Color newColor3 = new Color(255 / 255, 255 / 255, 255 / 255, 200 / 255);
+                Color newColor3 = new Color32(255, 255, 255, 100);
                 _GoMaskPanel.GetComponent<Image>().color = newColor3;
                 break;
             case UIFormLucencyType.Pentrate:            //完全透明 能穿透
@@ -104,7 +104,7 @@ public class UIMaskManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError(GetType()+"UI摄像机为null，请检查!");
+            Debug.LogError(GetType() + "UI摄像机为null，请检查!");
         }
 
     }

@@ -90,7 +90,6 @@ public class OutSceneMainPanel : MonoBehaviour
     /// </summary>
     public void OnRandomClick()
     {
-
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameStart : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     void Start()
     {
         //初始化配置
@@ -16,6 +16,7 @@ public class GameStart : MonoBehaviour
         //初始化数据
         UIManager.GetInstance().Init();
         OutFoodMgr.GetInstance().Model.Init();
+        OpenFile.GetInstance().Init();
 
         //打开主页
         UIManager.GetInstance().ShowUIForm(EM_WinType.MainUIPanel);

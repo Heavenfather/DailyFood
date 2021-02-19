@@ -23,4 +23,21 @@ public class WinOutFoodMain : BaseUIForms
         OpenUIForm(EM_WinType.MainUIPanel);
     }
 
+    public void OnRondomClick()
+    {
+        // OpenFile.GetInstance().LoadImg();
+    }
+
+    public void OnAddFoodClick()
+    {
+        //打开添加面板
+        OpenUIForm(EM_WinType.WinAddOutFood);
+    }
+
+    public void OnSearchClick()
+    {
+        //打开搜索面板
+
+    }
+
 }

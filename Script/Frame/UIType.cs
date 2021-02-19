@@ -13,5 +13,5 @@ public class UIType  {
     public UIFormShowMode UIForm_ShowMode = UIFormShowMode.Normal;
 
     //UI窗体透明度类型
-    public UIFormLucencyType UIForm_Luceny = UIFormLucencyType.Lucency;
+    public UIFormLucencyType UIForm_Luceny = UIFormLucencyType.Translucency;
 }

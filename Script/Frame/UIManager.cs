@@ -256,7 +256,8 @@ public class UIManager : MonoBehaviour
             goCloneUIPrefab.SetActive(false);
 
             //把克隆体加入到所有UI窗体缓存集合中
-            _DicAllUiFormses.Add(winType, baseUiForms);
+            if (!_DicAllUiFormses.ContainsKey(winType))
+                _DicAllUiFormses.Add(winType, baseUiForms);
 
             return baseUiForms;
         }
@@ -331,6 +332,10 @@ public class UIManager : MonoBehaviour
 
         //把当前指定显示的UI窗体作关闭处理，且从“当前显示窗体”集合中移除
         baseUiForms.Hiding();
+        //把窗体干掉
+        _DicAllUiFormses.Remove(winType);
+        GameObject.Destroy(baseUiForms.gameObject);
+
         _DicCurrentUIForm.Remove(winType);
     }
 
@@ -345,6 +350,8 @@ public class UIManager : MonoBehaviour
             BaseUIForms topUiForms = _StaCurrentUIForm.Pop();
             //UI窗体出栈后做隐藏处理
             topUiForms.Hiding();
+            _DicAllUiFormses.Remove(topUiForms.GetWinType());
+            GameObject.Destroy(topUiForms.gameObject);
 
             //取得栈顶元素  让栈顶的UI窗体作再显示处理
             BaseUIForms nextUiForms = _StaCurrentUIForm.Peek();
@@ -357,6 +364,8 @@ public class UIManager : MonoBehaviour
             BaseUIForms topUiForms = _StaCurrentUIForm.Pop();
             //UI窗体出栈后做隐藏处理 
             topUiForms.Hiding();
+            _DicAllUiFormses.Remove(topUiForms.GetWinType());
+            GameObject.Destroy(topUiForms.gameObject);
         }
     }
 
@@ -412,6 +421,8 @@ public class UIManager : MonoBehaviour
         //当前窗体设置为隐藏状态，且从“正在显示UI窗体”集合中移除
         baseUiForms.Hiding();
         _DicCurrentUIForm.Remove(winType);
+        _DicAllUiFormses.Remove(winType);
+        GameObject.Destroy(baseUiForms.gameObject);
 
 
         //把“正在显示UI窗体”集合和“栈集合”中所有的元素都做再显示处理

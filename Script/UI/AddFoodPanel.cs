@@ -10,8 +10,11 @@ public class AddFoodPanel : BaseUIForms
     }
 
     public override void InitUIType()
-    {        
-        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.Normal;
+    {
+        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.ReverseChange;
         base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
+        
     }
+
+
 }

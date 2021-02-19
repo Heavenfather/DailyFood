@@ -73,6 +73,7 @@ namespace Manager
                 {
                     m_lstLog.RemoveAt(0);
                 }
+                SaveToLocal();
             }
 #if UNITY_EDITOR
             switch (em)
