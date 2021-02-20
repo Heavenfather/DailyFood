@@ -5,4 +5,5 @@ public class EventName
 {
     public const string Event_ShowPanelLog = "ShowLogPanel";
     public const string Event_AddOneOutFood = "AddOneOutFood";
+    public const string Event_ChangeOneOutFood = "ChangeOneOutFood";
 }

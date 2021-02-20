@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Manager;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -37,6 +38,7 @@ public class WinAddOutFood : BaseUIForms
     private void Start()
     {
         base.BindEvent(EventName.Event_AddOneOutFood, AddOneFood);
+        base.BindEvent(EventName.Event_ChangeOneOutFood, ChangeOneFood);
         //构造年份数据
         List<Dropdown.OptionData> lst = new List<Dropdown.OptionData>();
         for (int i = 0; i < m_Years.Count; i++)
@@ -51,6 +53,7 @@ public class WinAddOutFood : BaseUIForms
     private void OnDestroy()
     {
         base.UnBindEvent(EventName.Event_AddOneOutFood, AddOneFood);
+        base.UnBindEvent(EventName.Event_ChangeOneOutFood, ChangeOneFood);
         m_tempId = 0;
         m_dicFoodCells.Clear();
     }
@@ -64,8 +67,6 @@ public class WinAddOutFood : BaseUIForms
     {
         base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.ReverseChange;
         base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
-        //刷新布局
-        // LayoutRebuilder.ForceRebuildLayoutImmediate(m_outFoodPerCellParent.transform as RectTransform);
     }
 
     private void AddOneFood(object[] args)
@@ -83,23 +84,95 @@ public class WinAddOutFood : BaseUIForms
         OutFoodPerCell cell = go.GetComponent<OutFoodPerCell>();
         if (cell != null)
         {
-            string txt = "";
-            txt += name + "-";
-            txt += price + "-";
-            txt += strState;
-            cell.Init(m_tempId, txt);
+            cell.Init(m_tempId, name, price, good, this);
             m_dicFoodCells.Add(m_tempId, cell);
             m_tempId++;
         }
 
     }
 
+    private void ChangeOneFood(object[] args)
+    {
+        if (args.Length < 3)
+            return;
+
+        string name = (string)args[0];
+        string price = (string)args[1];
+        bool good = (bool)args[2];
+        string strState = good ? "好吃" : "不好吃";
+        int tempId = (int)args[3];
+        foreach (var item in m_dicFoodCells)
+        {
+            if (item.Key != tempId)
+                continue;
+            OutFoodPerCell cell = item.Value;
+            cell.Refresh(name, price, good);
+        }
+    }
+
+    public void DeleteOneFood(int tempId)
+    {
+        OutFoodPerCell cell = null;
+        if (m_dicFoodCells.TryGetValue(tempId, out cell))
+        {
+            m_dicFoodCells.Remove(tempId);
+            GameObject.Destroy(cell.gameObject);
+        }
+    }
+
     public void OnComfirmClick()
     {
-        // string year = m_Years[m_dropdownYear.value];
-        // string month = m_dropdownMonth.options[m_dropdownMonth.value].text;
-        // Debug.Log(year);
-        // Debug.Log(month);
+        //检查参数
+        string adress = m_inputAdress.text;
+        if (string.IsNullOrEmpty(adress))
+        {
+            UnityHelper.OpenAtlerWin("地址不能为空");
+            return;
+        }
+        string storeName = m_inputStoreName.text;
+        if (string.IsNullOrEmpty(adress))
+        {
+            UnityHelper.OpenAtlerWin("店名不能为空");
+            return;
+        }
+        string line = m_inputLine.text;
+        string evaluate = m_inputEvaluate.text;
+        float star = 0;
+        float.TryParse(m_inputStar.text, out star);
+        string year = m_Years[m_dropdownYear.value];
+        string month = m_dropdownMonth.options[m_dropdownMonth.value].text;
+        string goodFood = "";
+        string badFood = "";
+        foreach (var item in m_dicFoodCells)
+        {
+            OutFoodPerCell cell = item.Value;
+            if (cell.Good)
+            {
+                goodFood += cell.FoodName + "-";
+                goodFood += cell.Price + ";";
+            }
+            else
+            {
+                badFood += cell.FoodName + "-";
+                badFood += cell.Price + ";";
+            }
+        }
+        if (!string.IsNullOrEmpty(goodFood))
+        {
+            goodFood = goodFood.TrimEnd(';');
+        }
+        if (!string.IsNullOrEmpty(badFood))
+        {
+            badFood = badFood.TrimEnd(';');
+        }
+        UnityHelper.OpenAtlerWin("是否确定添加?", () =>
+        {
+            OutFoodMgr.GetInstance().Model.AddOutFood(adress, storeName, goodFood, badFood, evaluate, year + "-" + month, star, line, "");
+            //关闭弹窗
+            CloseUIForm(EM_WinType.PopUpWindows);
+            //关闭添加菜单界面
+            CloseUIForm(EM_WinType.WinAddOutFood);
+        });
     }
 
     public void OnAddOneFoodClick()

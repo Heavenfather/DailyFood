@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Manager;
 using UnityEngine;
 
 public class WinOutFoodMain : BaseUIForms
@@ -25,7 +26,20 @@ public class WinOutFoodMain : BaseUIForms
 
     public void OnRondomClick()
     {
-        // OpenFile.GetInstance().LoadImg();
+        //得到一个随机的数据
+        OutFood food = OutFoodMgr.GetInstance().Model.GetOneRandomFood();
+        if (food == null)
+        {
+            UnityHelper.OpenAtlerWin("没有随机出来数据");
+            return;
+        }
+        //打开随机面板，并且初始化数据
+        OpenUIForm(EM_WinType.WinRandomOutFood);
+        WinRandomOutFood randomPanel = UIManager.GetInstance().GetWinForm(EM_WinType.WinRandomOutFood) as WinRandomOutFood;
+        if (randomPanel != null)
+        {
+            randomPanel.Init(food);
+        }
     }
 
     public void OnAddFoodClick()
@@ -38,6 +52,15 @@ public class WinOutFoodMain : BaseUIForms
     {
         //打开搜索面板
 
+    }
+
+    /// <summary>
+    /// 点击重置随机数据
+    /// </summary>
+    public void OnResetRandomDataClick()
+    {
+        OutFoodMgr.GetInstance().Model.ResetRandomKeys();
+        UnityHelper.OpenAtlerWin("清楚成功!");
     }
 
 }

@@ -22,6 +22,10 @@ public class WinList
         dicUIResPath.Add(EM_WinType.WinAddOutFood, path);
         path = PathMgr.GetInstance().GetResPath(EM_ResPathStyle.UI, "AddFoodPanel");
         dicUIResPath.Add(EM_WinType.AddFoodPanel, path);
+        path = PathMgr.GetInstance().GetResPath(EM_ResPathStyle.UI, "WinRandomOutFood");
+        dicUIResPath.Add(EM_WinType.WinRandomOutFood, path);
+        path = PathMgr.GetInstance().GetResPath(EM_ResPathStyle.UI, "WinOutFoodSearch");
+        dicUIResPath.Add(EM_WinType.WinOutFoodSearch, path);
     }
 
 }

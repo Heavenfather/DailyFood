@@ -12,6 +12,11 @@ public class AddFoodPanel : BaseUIForms
     InputField m_InputPrice;
     [SerializeField]
     Toggle m_toggleGood;
+    [SerializeField]
+    Toggle m_toggleBad;
+
+    private bool m_isChange = false;
+    private int m_foodTempId = -1;
 
     public override EM_WinType GetWinType()
     {
@@ -22,7 +27,16 @@ public class AddFoodPanel : BaseUIForms
     {
         base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.ReverseChange;
         base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
+    }
 
+    public void InitPanel(string foodName, string price, bool good, int tempID)
+    {
+        m_inputFoodName.text = foodName;
+        m_InputPrice.text = price;
+        m_toggleGood.isOn = good;
+        m_toggleBad.isOn = !good;
+        m_isChange = true;
+        m_foodTempId = tempID;
     }
 
     public void OnComfirmClick()
@@ -40,7 +54,10 @@ public class AddFoodPanel : BaseUIForms
             UnityHelper.OpenAtlerWin("价格不能为空");
             return;
         }
-        EventMgr.GetInstance().NotifireEvent(EventName.Event_AddOneOutFood, foodName, price, state);
+        if (!m_isChange)
+            EventMgr.GetInstance().NotifireEvent(EventName.Event_AddOneOutFood, foodName, price, state);
+        else
+            EventMgr.GetInstance().NotifireEvent(EventName.Event_ChangeOneOutFood, foodName, price, state, m_foodTempId);
 
         //关闭界面
         CloseUIForm(this.GetWinType());

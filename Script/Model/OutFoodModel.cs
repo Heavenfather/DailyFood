@@ -1,8 +1,10 @@
+using System.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using LitJson;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class OutFoodModel : Model
 {
@@ -18,6 +20,7 @@ public class OutFoodModel : Model
     /// </summary>
     /// <returns></returns>
     private Dictionary<string, List<OutFood>> m_dicFuzzyChecked = new Dictionary<string, List<OutFood>>();
+    private List<int> m_randomFoodKeys = new List<int>();
     /// <summary>
     /// 出去吃的菜单最大索引值
     /// </summary>
@@ -34,6 +37,7 @@ public class OutFoodModel : Model
         base.Init();
         JsonData datas = JsonParse.ParseToJsonData(SysDefine.OutFoodJsonName);
         if (datas == null) return;
+        m_outFoodJsonData = datas;
         V_OutFoodMaxIndex = datas.Keys.Count;
         for (int i = 0; i < datas.Keys.Count; i++)
         {
@@ -98,7 +102,8 @@ public class OutFoodModel : Model
             bool b2 = UnityHelper.FuzzyCheck(name, item.Value.V_GoodFoodName);
             bool b3 = UnityHelper.FuzzyCheck(name, item.Value.V_StoreName);
             bool b4 = UnityHelper.FuzzyCheck(name, item.Value.V_BadFoodName);
-            if (b1 || b2 || b3 || b4)
+            bool b5 = UnityHelper.FuzzyCheck(name, item.Value.V_Line);
+            if (b1 || b2 || b3 || b4 || b5)
             {
                 lst.Add(item.Value);
             }
@@ -136,10 +141,21 @@ public class OutFoodModel : Model
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.BadFoodName.ToString()] = badFoodName;
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Evaluate.ToString()] = evaluate;
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Date.ToString()] = date;
+            //限制在0-5分内
+            if (star < 0)
+            {
+                star = 0;
+            }
+            if (star > 5)
+            {
+                star = 5;
+            }
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Star.ToString()] = star.ToString();
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Line.ToString()] = line;
             m_outFoodJsonData[V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Image.ToString()] = image;
         }
+        //写到本地
+        JsonParse.SaveJsonDataToLocal(m_outFoodJsonData, SysDefine.OutFoodJsonName);
     }
 
     /// <summary>
@@ -188,17 +204,55 @@ public class OutFoodModel : Model
     }
 
     /// <summary>
-    /// 根据年月得到所有数据
+    /// 得到一个随机的数据
     /// </summary>
-    /// <param name="year"></param>
+    /// <returns></returns>
+    public OutFood GetOneRandomFood()
+    {
+        List<int> allKeys = m_dicOutFood.Keys.ToList();
+        if (allKeys.Count <= 0)
+            return null;
+        List<int> tempKeys = new List<int>();
+        for (int i = 0; i < allKeys.Count; i++)
+        {
+            //随机过的数不再显示
+            if (m_randomFoodKeys.Contains(allKeys[i]))
+                continue;
+            tempKeys.Add(allKeys[i]);
+        }
+        if (tempKeys.Count <= 0)
+            return null;
+        OutFood food = null;
+        int index = Random.Range(0, tempKeys.Count - 1);
+        int key = tempKeys[index];
+        if (m_dicOutFood.TryGetValue(key,out food))
+        {
+            //加到随机过的key里面
+            m_randomFoodKeys.Add(key);
+        }
+
+        return food;
+    }
+
+    /// <summary>
+    /// 重置随机的数据
+    /// </summary>
+    public void ResetRandomKeys()
+    {
+        m_randomFoodKeys.Clear();
+    }
+
+    /// <summary>
+    /// 根据月份得到所有数据
+    /// </summary>
     /// <param name="month"></param>
     /// <returns></returns>
-    public List<OutFood> GetDatasByDate(int year, int month)
+    public List<OutFood> GetDatasByDate(int month)
     {
         List<OutFood> foods = new List<OutFood>();
         foreach (var item in m_dicOutFood)
         {
-            if (item.Value.V_Date.Year == year && item.Value.V_Date.Month == month)
+            if (item.Value.V_Date.Month == month)
             {
                 foods.Add(item.Value);
             }

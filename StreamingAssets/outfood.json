@@ -1,13 +1,57 @@
-﻿{
+{
     "1": {
         "Adress": "广东广州",
         "StoreName": "生蚝店",
-        "GoodFoodName":"烧生蚝-20;烤茄子-50",
+        "GoodFoodName": "烧生蚝-20;烤茄子-50",
         "BadFoodName": "秋葵-20",
-        "Evaluate":"评价评价",
-        "Date":"2021-2",
-        "Star":"3.2",
-        "Line":"出行方式",
+        "Evaluate": "评价评价",
+        "Date": "2021-2",
+        "Star": "3.2",
+        "Line": "出行方式",
         "Image": "1;2;3"
+    },
+    "2": {
+        "Adress": "广州越秀",
+        "StoreName": "炸鸡店",
+        "GoodFoodName": "炸鸡-12;榨菜-14",
+        "BadFoodName": "炸面-15;炸鸡翅-44",
+        "Evaluate": "大幅度发",
+        "Date": "2022-3月",
+        "Star": "5",
+        "Line": "十多个",
+        "Image": ""
+    },
+    "3": {
+        "Adress": "sdf",
+        "StoreName": "潍坊人",
+        "GoodFoodName": "电饭锅-33",
+        "BadFoodName": "",
+        "Evaluate": "的非官方个",
+        "Date": "2020-1月",
+        "Star": "3",
+        "Line": "双方各分管",
+        "Image": ""
+    },
+    "4": {
+        "Adress": "是规范化",
+        "StoreName": "体育教育局",
+        "GoodFoodName": "是的-65",
+        "BadFoodName": "魂骨-66",
+        "Evaluate": "发给他合体后加油加油加油教育与",
+        "Date": "2021-2月",
+        "Star": "0.5",
+        "Line": "和规范化",
+        "Image": ""
+    },
+    "5": {
+        "Adress": "现在加上的",
+        "StoreName": "没有点名",
+        "GoodFoodName": "一个个-10;二哥哥-20",
+        "BadFoodName": "三哥哥-30",
+        "Evaluate": "",
+        "Date": "2021-3月",
+        "Star": "0",
+        "Line": "",
+        "Image": ""
     }
 }

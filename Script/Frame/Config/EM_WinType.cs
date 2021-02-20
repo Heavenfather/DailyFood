@@ -14,5 +14,9 @@ public enum EM_WinType
     WinAddOutFood,
     //添加食物
     AddFoodPanel,
+    //出去吃随机出来的界面
+    WinRandomOutFood,
+    //出去吃搜索界面
+    WinOutFoodSearch,
 
 }
