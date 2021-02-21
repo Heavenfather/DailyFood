@@ -168,8 +168,7 @@ public class WinAddOutFood : BaseUIForms
         UnityHelper.OpenAtlerWin("是否确定添加?", () =>
         {
             OutFoodMgr.GetInstance().Model.AddOutFood(adress, storeName, goodFood, badFood, evaluate, year + "-" + month, star, line, "");
-            //关闭弹窗
-            CloseUIForm(EM_WinType.PopUpWindows);
+            
             //关闭添加菜单界面
             CloseUIForm(EM_WinType.WinAddOutFood);
         });

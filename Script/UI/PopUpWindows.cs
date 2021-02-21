@@ -48,6 +48,7 @@ public class PopUpWindows : BaseUIForms
         if (okCallback != null)
         {
             m_btnComfirm.onClick.AddListener(okCallback);
+            m_btnComfirm.onClick.AddListener(OnOkClick);
             m_comfirmAction = okCallback;
         }
         else
@@ -57,6 +58,7 @@ public class PopUpWindows : BaseUIForms
         if (cancelCallback != null)
         {
             m_btnCancel.onClick.AddListener(cancelCallback);
+            m_btnCancel.onClick.AddListener(OnCancelClick);
             m_cancelAction = cancelCallback;
         }
         else
@@ -67,12 +69,12 @@ public class PopUpWindows : BaseUIForms
 
     private void OnOkClick()
     {
-        CloseUIForm(EM_WinType.PopUpWindows);
+        CloseUIForm(GetWinType());
     }
 
     private void OnCancelClick()
     {
-        CloseUIForm(EM_WinType.PopUpWindows);
+        CloseUIForm(GetWinType());
     }
 
 }

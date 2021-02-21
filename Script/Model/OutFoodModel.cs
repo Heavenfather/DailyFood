@@ -117,6 +117,78 @@ public class OutFoodModel : Model
     }
 
     /// <summary>
+    /// 根据总价区间得到数据
+    /// 如果max传-1，则表示无穷大，价格将不设置最高价，只要大于最小值都满足返回
+    /// 如果min传-1，则表示价格不设置最低价，只要小于最大值的都满足返回
+    /// </summary>
+    /// <param name="minPrice"></param>
+    /// <param name="maxPrice"></param>
+    /// <returns></returns>
+    public List<OutFood> GetOutFoodsByPriceArea(float minPrice, float maxPrice)
+    {
+        List<OutFood> lst = new List<OutFood>();
+        foreach (var item in m_dicOutFood)
+        {
+            float price = item.Value.GetTotalPrice();
+            if (minPrice < 0)
+            {
+                //取小于最大值的数据
+                if (price <= maxPrice)
+                    lst.Add(item.Value);
+            }
+            else if (maxPrice < 0)
+            {
+                //取大于最低值的数据
+                if (price >= minPrice)
+                    lst.Add(item.Value);
+            }
+            else
+            {
+                //取区间
+                if (price >= minPrice && price <= maxPrice)
+                    lst.Add(item.Value);
+            }
+        }
+        return lst;
+    }
+
+    /// <summary>
+    ///  根据总评分区间得到数据
+    /// 如果max传-1，则表示无穷大，只要大于最小值都满足返回
+    /// 如果min传-1，只要小于最大值的都满足返回
+    /// </summary>
+    /// <param name="minStar"></param>
+    /// <param name="maxStar"></param>
+    /// <returns></returns>
+    public List<OutFood> GetOutFoodsByStarArea(float minStar, float maxStar)
+    {
+        List<OutFood> lst = new List<OutFood>();
+        foreach (var item in m_dicOutFood)
+        {
+            float price = item.Value.V_Star;
+            if (minStar < 0)
+            {
+                //取小于最大值的数据
+                if (price <= maxStar)
+                    lst.Add(item.Value);
+            }
+            else if (maxStar < 0)
+            {
+                //取大于最低值的数据
+                if (price >= minStar)
+                    lst.Add(item.Value);
+            }
+            else
+            {
+                //取区间
+                if (price >= minStar && price <= maxStar)
+                    lst.Add(item.Value);
+            }
+        }
+        return lst;
+    }
+
+    /// <summary>
     /// 添加一条出去吃的数据
     /// </summary>
     /// <param name="adress"></param>
@@ -225,7 +297,7 @@ public class OutFoodModel : Model
         OutFood food = null;
         int index = Random.Range(0, tempKeys.Count - 1);
         int key = tempKeys[index];
-        if (m_dicOutFood.TryGetValue(key,out food))
+        if (m_dicOutFood.TryGetValue(key, out food))
         {
             //加到随机过的key里面
             m_randomFoodKeys.Add(key);
@@ -235,11 +307,29 @@ public class OutFoodModel : Model
     }
 
     /// <summary>
+    /// 获取所有出去吃的数据
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<int, OutFood> GetAllOutFood()
+    {
+        return m_dicOutFood;
+    }
+
+    /// <summary>
     /// 重置随机的数据
     /// </summary>
     public void ResetRandomKeys()
     {
         m_randomFoodKeys.Clear();
+    }
+
+    /// <summary>
+    /// 是否有随机过数据
+    /// </summary>
+    /// <returns></returns>
+    public bool IsRandomized()
+    {
+        return m_randomFoodKeys.Count > 0;
     }
 
     /// <summary>

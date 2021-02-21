@@ -19,9 +19,21 @@ public class WinOutFoodMain : BaseUIForms
 
     private void OnBtnCloseClick()
     {
-        //关闭自身，显示主界面
-        CloseUIForm(GetWinType());
-        OpenUIForm(EM_WinType.MainUIPanel);
+        if (OutFoodMgr.GetInstance().Model.IsRandomized())
+        {
+            UnityHelper.OpenAtlerWin("返回将重置随机的数据", () =>
+            {
+                OutFoodMgr.GetInstance().Model.ResetRandomKeys();
+                CloseUIForm(GetWinType());
+                OpenUIForm(EM_WinType.MainUIPanel);
+            });
+        }
+        else
+        {
+            //关闭自身，显示主界面
+            CloseUIForm(GetWinType());
+            OpenUIForm(EM_WinType.MainUIPanel);
+        }
     }
 
     public void OnRondomClick()
@@ -51,16 +63,6 @@ public class WinOutFoodMain : BaseUIForms
     public void OnSearchClick()
     {
         //打开搜索面板
-
+        OpenUIForm(EM_WinType.WinOutFoodSearch);
     }
-
-    /// <summary>
-    /// 点击重置随机数据
-    /// </summary>
-    public void OnResetRandomDataClick()
-    {
-        OutFoodMgr.GetInstance().Model.ResetRandomKeys();
-        UnityHelper.OpenAtlerWin("清楚成功!");
-    }
-
 }
