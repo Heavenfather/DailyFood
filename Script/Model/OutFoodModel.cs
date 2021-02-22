@@ -29,8 +29,7 @@ public class OutFoodModel : Model
     /// <summary>
     /// 出去吃的json数据
     /// </summary>
-    private JsonData m_outFoodJsonData = null;
-    public JsonData OutFoodJsonData { get => m_outFoodJsonData; }
+    private JsonData m_outFoodJsonData = new JsonData();
 
     public override void Init()
     {
@@ -63,7 +62,7 @@ public class OutFoodModel : Model
         V_OutFoodMaxIndex = 0;
         m_dicOutFood.Clear();
         m_dicFuzzyChecked.Clear();
-        m_outFoodJsonData = null;
+        // m_outFoodJsonData = null;
     }
 
 

@@ -1,13 +1,1 @@
-{
-    "1": {
-        "Adress": "棠东",
-        "StoreName": "牛杂煲",
-        "GoodFoodName": "杂菜-15;小煲牛杂-68;小龙虾-12;炸腐竹-10",
-        "BadFoodName": "",
-        "Evaluate": "还挺不错的，值得推荐？",
-        "Date": "2020-12月",
-        "Star": "5",
-        "Line": "出门左拐5米",
-        "Image": ""
-    }
-}
+{"1":{"Adress":"棠东","StoreName":"牛杂煲","GoodFoodName":"","BadFoodName":"","Evaluate":"","Date":"2020-1月","Star":"5","Line":"","Image":""}}

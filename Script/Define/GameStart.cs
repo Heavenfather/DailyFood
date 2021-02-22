@@ -16,6 +16,7 @@ public class GameStart : MonoBehaviour
         //初始化数据
         UIManager.GetInstance().Init();
         OutFoodMgr.GetInstance().Model.Init();
+        HomeFoodMgr.GetInstance().Model.Init();
         OpenFile.GetInstance().Init();
 
         //打开主页

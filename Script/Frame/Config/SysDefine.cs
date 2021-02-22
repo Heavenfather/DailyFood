@@ -56,6 +56,7 @@ public class SysDefine
 
     //json名称
     public const string OutFoodJsonName = "outfood";
+    public const string HomeFoodJsonName = "homefood";
 
     #endregion
 

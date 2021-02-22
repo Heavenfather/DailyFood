@@ -16,7 +16,7 @@ public class JsonParse
     /// <returns>Objec类型的JsonData</returns>
     public static JsonData ParseToJsonData(string jsonName)
     {
-        string path = PathMgr.GetInstance().StreamPath + "/" + jsonName +".json";
+        string path = PathMgr.GetInstance().StreamPath + "/" + jsonName + ".json";
         if (PathMgr.GetInstance().CheckFile(path))
         {
             try
@@ -33,11 +33,7 @@ public class JsonParse
                 return null;
             }
         }
-        else
-        {
-            LogMgr.GetInstance().Log(LogEnum.Error, "Json文件不存在:" + path);
-            return null;
-        }
+        return null;
     }
 
     /// <summary>
@@ -53,8 +49,15 @@ public class JsonParse
             //转译中文
             Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
             saveData = reg.Replace(saveData, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
-
-            StreamWriter streamWriter = new StreamWriter(PathMgr.GetInstance().StreamPath + "/" + saveName + ".json");
+            StreamWriter streamWriter;
+            if (!PathMgr.GetInstance().CheckFile(PathMgr.GetInstance().StreamPath + "/" + saveName + ".json"))
+            {
+                streamWriter = File.CreateText(PathMgr.GetInstance().StreamPath + "/" + saveName + ".json");
+            }
+            else
+            {
+                streamWriter = new StreamWriter(PathMgr.GetInstance().StreamPath + "/" + saveName + ".json");
+            }
             streamWriter.Write(saveData);
             streamWriter.Dispose();
             streamWriter.Close();
