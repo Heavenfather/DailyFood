@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using UnityEngine.Networking;
 using Manager;
+using System.Threading.Tasks;
 
 public class OpenFile : MonoBehaviour
 {
@@ -20,11 +21,40 @@ public class OpenFile : MonoBehaviour
         return _instance;
     }
 
+    private Dictionary<string, Sprite> m_dicCachSprite = new Dictionary<string, Sprite>();
+
     public void Init()
     {
-        
-    }
+        //缓存保存的图片资源
+        if (Directory.Exists(PathMgr.GetInstance().ImagePath))
+        {
+            DirectoryInfo dir = new DirectoryInfo(PathMgr.GetInstance().ImagePath);
+            FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
 
+            for (int i = 0; i < files.Length; i++)
+            {
+                if (files[i].Name.EndsWith(".meta"))
+                    continue;
+                int index = files[i].Name.LastIndexOf('.');
+                string key = files[i].Name.Remove(index);
+
+                StartCoroutine(LoadSpriteAsync(key, (obj) =>
+                {
+                    Sprite sp = obj as Sprite;
+                    if (sp == null)
+                        return;
+                    if (!m_dicCachSprite.ContainsKey(key))
+                    {
+                        m_dicCachSprite.Add(key, sp);
+                    }
+                }));
+            }
+        }
+        else
+        {
+            Directory.CreateDirectory(PathMgr.GetInstance().ImagePath);
+        }
+    }
     private void Awake()
     {
         //设置父节点
@@ -33,7 +63,7 @@ public class OpenFile : MonoBehaviour
         this.gameObject.transform.SetParent(scriptHolder);
     }
 
-    public void LoadImg()
+    public void OpenDialogAndCopyImage(string saveName, Action<UnityEngine.Object> callback)
     {
         OpenFileName ofn = new OpenFileName();
         ofn.structSize = Marshal.SizeOf(ofn);
@@ -51,7 +81,6 @@ public class OpenFile : MonoBehaviour
         {
             path = _lastSelectPath;
         }
-        // string path = Application.streamingAssetsPath;
         path = path.Replace('/', '\\');
         //默认路径
         ofn.initialDir = path;
@@ -63,21 +92,17 @@ public class OpenFile : MonoBehaviour
 
         if (WindowDll.GetFile(ofn))
         {
-            //  Debug.Log("Selected file with full path: {0}" + ofn.file);
             //记录上次选择的路径
             _lastSelectPath = ofn.file;
             _lastSelectPath = _lastSelectPath.Replace('\\', '/');
             int index = _lastSelectPath.LastIndexOf('/');
             _lastSelectPath = _lastSelectPath.Remove(index);
-            StartCoroutine(Load(ofn.file));
+            StartCoroutine(LoadAndCopyImage(ofn.file, saveName, callback));
         }
-
     }
 
-    IEnumerator Load(string path)
+    IEnumerator LoadAndCopyImage(string path, string saveName, Action<UnityEngine.Object> callback)
     {
-        // double startTime = (double)Time.time;
-        //加载文件
         UnityWebRequest request = UnityWebRequest.Get("file:///" + path);
         DownloadHandlerTexture downTexture = new DownloadHandlerTexture(true);
         request.downloadHandler = downTexture;
@@ -86,16 +111,48 @@ public class OpenFile : MonoBehaviour
         {
             //获取Texture
             Texture2D texture = downTexture.texture;
-            //直接将选择图保存为png格式
+            //直接将选择图保存为png格式，拷贝到指定目录
             byte[] bytes = texture.EncodeToPNG();
-            // File.WriteAllBytes(string.Format("{0:F0}", Time.realtimeSinceStartup * 10f) + ".png", bytes);
-            File.WriteAllBytes(PathMgr.GetInstance().StreamPath + "/" + string.Format("{0:F0}", Time.realtimeSinceStartup * 10f) + ".png", bytes);
+            File.WriteAllBytes(PathMgr.GetInstance().ImagePath + saveName + ".png", bytes);
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-            // startTime = (double)Time.time - startTime;
+            if (!m_dicCachSprite.ContainsKey(saveName))
+            {
+                m_dicCachSprite.Add(saveName, sprite);
+            }
+            callback(sprite);
         }
         else
         {
             LogMgr.GetInstance().Log(LogEnum.Error, "加载图片失败:" + path);
+        }
+    }
+
+    IEnumerator LoadSpriteAsync(string name, Action<UnityEngine.Object> callback)
+    {
+        string path = PathMgr.GetInstance().ImagePath + name + ".png";
+        UnityWebRequest request = UnityWebRequest.Get("file:///" + path);
+        DownloadHandlerTexture downTexture = new DownloadHandlerTexture(true);
+        request.downloadHandler = downTexture;
+        yield return request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.Success && request != null)
+        {
+            Texture2D texture = downTexture.texture;
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            callback(sprite);
+        }
+    }
+
+    public Sprite GetSpriteByName(string name)
+    {
+        if (m_dicCachSprite.ContainsKey(name))
+        {
+            return m_dicCachSprite[name];
+        }
+        else
+        {
+            //没有图片
+            LogMgr.GetInstance().Log(LogEnum.Error, "未缓存到图片:" + name);
+            return null;
         }
     }
 

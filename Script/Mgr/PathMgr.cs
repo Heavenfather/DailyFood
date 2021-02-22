@@ -59,6 +59,20 @@ namespace Manager
             }
         }
 
+
+
+        /// <summary>
+        /// 存放图片的路径
+        /// </summary>
+        /// <value></value>
+        public string ImagePath
+        {
+            get
+            {
+                return Application.streamingAssetsPath.Replace("\\", "/") + "/Image/";
+            }
+        }
+
         /// <summary>
         /// 检查某个路径下文件是否存在
         /// </summary>
