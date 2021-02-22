@@ -33,10 +33,9 @@ public class WinOutFoodSearch : BaseUIForms
         return EM_WinType.WinOutFoodSearch;
     }
 
-    public override void InitUIType()
+    public override UIFormType GetUIType()
     {
-        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.ReverseChange;
-        base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
+        return UIFormType.PopUp;
     }
 
     private void Start()

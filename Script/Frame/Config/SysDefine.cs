@@ -15,17 +15,17 @@ using UnityEngine;
 //UI窗体类型
 public enum UIFormType
 {
-    Norlmal,        //普通窗体
-    Fixed,          //固定窗体
+    Full,        //全屏窗体
+    // Fixed,          //固定窗体
     PopUp           //弹出窗体
 }
 
 //UI窗体的显示类型
 public enum UIFormShowMode
 {
-    Normal,         //普通
-    ReverseChange,  //反向切换窗体
-    HideOther
+    // Normal,         //普通
+    // ReverseChange,  //反向切换窗体
+    // HideOther
 }
 
 //UI窗体的透明度类型

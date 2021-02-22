@@ -17,10 +17,9 @@ public class PopUpWindows : BaseUIForms
     UnityAction m_comfirmAction = null;
     UnityAction m_cancelAction = null;
 
-    public override void InitUIType()
+    public override UIFormType GetUIType()
     {
-        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.ReverseChange;
-        base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
+        return UIFormType.PopUp;
     }
 
     public override EM_WinType GetWinType()
@@ -30,7 +29,6 @@ public class PopUpWindows : BaseUIForms
 
     public override void Hiding()
     {
-        base.Hiding();
         //移除监听
         if (m_comfirmAction != null)
         {
@@ -40,6 +38,7 @@ public class PopUpWindows : BaseUIForms
         {
             m_btnCancel.onClick.RemoveListener(m_cancelAction);
         }
+        base.Hiding();
     }
 
     public void Init(string content, UnityAction okCallback = null, UnityAction cancelCallback = null)

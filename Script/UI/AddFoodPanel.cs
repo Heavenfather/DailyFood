@@ -23,10 +23,9 @@ public class AddFoodPanel : BaseUIForms
         return EM_WinType.AddFoodPanel;
     }
 
-    public override void InitUIType()
+    public override UIFormType GetUIType()
     {
-        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.ReverseChange;
-        base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
+        return UIFormType.PopUp;
     }
 
     public void InitPanel(string foodName, string price, bool good, int tempID)

@@ -5,16 +5,19 @@ using UnityEngine;
 
 public class WinOutFoodMain : BaseUIForms
 {
-    public override void InitUIType()
+    public override UIFormType GetUIType()
     {
-        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.HideOther;
-        base.CurrentUIType.UIForm_Type = UIFormType.Norlmal;
-        SetCloseToDo(OnBtnCloseClick);
+        return UIFormType.Full;
     }
 
     public override EM_WinType GetWinType()
     {
         return EM_WinType.WinOutFoodMain;
+    }
+
+    private void Awake()
+    {
+        SetCloseToDo(OnBtnCloseClick);
     }
 
     private void OnBtnCloseClick()

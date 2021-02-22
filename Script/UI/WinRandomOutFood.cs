@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Manager;
 
 public class WinRandomOutFood : BaseUIForms
 {
@@ -24,15 +25,15 @@ public class WinRandomOutFood : BaseUIForms
         return EM_WinType.WinRandomOutFood;
     }
 
-    public override void InitUIType()
+    public override UIFormType GetUIType()
     {
-        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.ReverseChange;
-        base.CurrentUIType.UIForm_Type = UIFormType.PopUp;
+        return UIFormType.PopUp;
     }
 
     public void Init(OutFood food)
     {
-        m_data = food;
+        //根据key来实时取数据比较安       
+        m_data = OutFoodMgr.GetInstance().Model.GetOutFoodInfoByKey(food.V_Key);
         m_txtStoreName.text = food.V_StoreName;
         m_txtAdress.text = food.V_Adress;
         m_txtStar.text = food.V_Star.ToString();
@@ -69,6 +70,16 @@ public class WinRandomOutFood : BaseUIForms
     public void OnLineClick()
     {
         UnityHelper.OpenAtlerWin(m_data.V_Line);
+    }
+
+    public void OnChangeClick()
+    {
+        OpenUIForm(EM_WinType.WinAddOutFood);
+        WinAddOutFood panel = UIManager.GetInstance().GetWinForm(EM_WinType.WinAddOutFood) as WinAddOutFood;
+        if (panel != null)
+        {
+            panel.Init(m_data);
+        }
     }
 
 }

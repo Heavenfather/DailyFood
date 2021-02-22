@@ -201,6 +201,7 @@ public class OutFoodModel : Model
         V_OutFoodMaxIndex += 1;
 
         OutFood food = new OutFood(V_OutFoodMaxIndex, adress, storeName, goodFoodName, badFoodName, evaluate, date, star, line, image);
+        //加到缓存中
         if (!m_dicOutFood.ContainsKey(V_OutFoodMaxIndex))
             m_dicOutFood.Add(V_OutFoodMaxIndex, food);
         //写入json数据
@@ -231,28 +232,52 @@ public class OutFoodModel : Model
     }
 
     /// <summary>
-    /// 根据店名获取保存上次吃的总价
+    /// 根据key更新数据
     /// </summary>
+    /// <param name="key"></param>
+    /// <param name="adress"></param>
     /// <param name="storeName"></param>
-    /// <returns></returns>
-    public float GetTotalPrice(string storeName)
+    /// <param name="goodFoodName"></param>
+    /// <param name="badFoodName"></param>
+    /// <param name="evaluate"></param>
+    /// <param name="date"></param>
+    /// <param name="star"></param>
+    /// <param name="line"></param>
+    /// <param name="image"></param>
+    public void UpdateFoodData(int key, string adress, string storeName, string goodFoodName, string badFoodName, string evaluate, string date, float star, string line, string image)
     {
-        float price = -1;
-        foreach (var item in m_dicOutFood)
+        if (!m_dicOutFood.ContainsKey(key))
+            return;
+        //更新缓存的数据
+        OutFood food = new OutFood(key, adress, storeName, goodFoodName, badFoodName, evaluate, date, star, line, image);
+        m_dicOutFood[key] = food;
+        //更新json数据
+        if (m_outFoodJsonData != null && m_outFoodJsonData[key] != null)
         {
-            bool check = UnityHelper.FuzzyCheck(storeName, item.Value.V_StoreName);
-            if (check)
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()] = new JsonData();
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Adress.ToString()] = adress;
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.StoreName.ToString()] = storeName;
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.GoodFoodName.ToString()] = goodFoodName;
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.BadFoodName.ToString()] = badFoodName;
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Evaluate.ToString()] = evaluate;
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Date.ToString()] = date;
+            //限制在0-5分内
+            if (star < 0)
             {
-                price = item.Value.GetTotalPrice();
-                break;
+                star = 0;
             }
+            if (star > 5)
+            {
+                star = 5;
+            }
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Star.ToString()] = star.ToString();
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Line.ToString()] = line;
+            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Image.ToString()] = image;
         }
-        if (price < 0)
-        {
-            UnityHelper.OpenAtlerWin("搜索的店名不存在");
-        }
-        return price;
+        //写到本地
+        JsonParse.SaveJsonDataToLocal(m_outFoodJsonData, SysDefine.OutFoodJsonName);
     }
+
     /// <summary>
     /// 根据食物名称 获取所有的该食物信息
     /// </summary>

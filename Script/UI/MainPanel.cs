@@ -23,9 +23,9 @@ public class MainPanel : BaseUIForms
     #endregion
 
     #region Unity函数
-    public override void InitUIType()
+    public override UIFormType GetUIType()
     {
-        base.CurrentUIType.UIForm_ShowMode = UIFormShowMode.HideOther;
+        return UIFormType.Full;
 
     }
 
@@ -73,6 +73,8 @@ public class MainPanel : BaseUIForms
     public void OnOutClick()
     {
         UIManager.GetInstance().ShowUIForm(EM_WinType.WinOutFoodMain);
+        //关闭自身
+        CloseUIForm(GetWinType());
     }
     public void OnHomeClick()
     {

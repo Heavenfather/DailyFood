@@ -33,12 +33,7 @@ public abstract class BaseUIForms : MonoBehaviour
         set { _CurrentUIType = value; }
     }
 
-    public void Awake()
-    {
-        InitUIType();
-    }
-
-    public abstract void InitUIType();
+    public abstract UIFormType GetUIType();
     public abstract EM_WinType GetWinType();
 
     public virtual void OnCloseTodo()
@@ -53,7 +48,7 @@ public abstract class BaseUIForms : MonoBehaviour
     {
         this.gameObject.SetActive(true);
         //设置UI遮罩
-        if (_CurrentUIType.UIForm_Type == UIFormType.PopUp)
+        if (GetUIType() == UIFormType.PopUp)
         {
             UIMaskManager.GetInstance().SetMaskWindow(this.gameObject, CurrentUIType.UIForm_Luceny);
         }
@@ -72,14 +67,13 @@ public abstract class BaseUIForms : MonoBehaviour
     /// </summary>
     public virtual void Hiding()
     {
-        this.gameObject.SetActive(false);
+        // this.gameObject.SetActive(false);
 
         //取消UI遮罩
-        if (_CurrentUIType.UIForm_Type == UIFormType.PopUp)
+        if (GetUIType() == UIFormType.PopUp)
         {
             UIMaskManager.GetInstance().CancelMaskWindow();
         }
-
         if (m_btnClose != null && OnCloseAction == null)
         {
             m_btnClose.onClick.RemoveListener(OnCloseTodo);
@@ -88,37 +82,9 @@ public abstract class BaseUIForms : MonoBehaviour
         {
             m_btnClose.onClick.RemoveListener(OnCloseAction);
         }
+        //删除自身
+        GameObject.Destroy(this.gameObject);
     }
-
-    /// <summary>
-    /// 再显示状态
-    /// </summary>
-    public virtual void ReDisplay()
-    {
-        this.gameObject.SetActive(true);
-        //设置UI遮罩
-        if (_CurrentUIType.UIForm_Type == UIFormType.PopUp)
-        {
-            UIMaskManager.GetInstance().SetMaskWindow(this.gameObject, CurrentUIType.UIForm_Luceny);
-        }
-        if (m_btnClose != null && OnCloseAction == null)
-        {
-            m_btnClose.onClick.AddListener(OnCloseTodo);
-        }
-        if (m_btnClose != null && OnCloseAction != null)
-        {
-            m_btnClose.onClick.AddListener(OnCloseAction);
-        }
-    }
-
-    /// <summary>
-    /// 冻结状态
-    /// </summary>
-    public virtual void Freeze()
-    {
-        this.gameObject.SetActive(true);
-    }
-
 
     #endregion
 
