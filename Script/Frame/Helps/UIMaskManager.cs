@@ -32,8 +32,6 @@ public class UIMaskManager : MonoBehaviour
     private Camera _UICamera;
     //UI摄像机原始的层深
     private float _OriginalUICameraDepth;
-
-    // private GameObject _CurFormMaskPanel = null;
     Dictionary<EM_WinType, GameObject> _DicCurFormMaskPanel = new Dictionary<EM_WinType, GameObject>();
 
     void Awake()

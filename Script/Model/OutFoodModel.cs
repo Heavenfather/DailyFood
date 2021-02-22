@@ -251,16 +251,26 @@ public class OutFoodModel : Model
         //更新缓存的数据
         OutFood food = new OutFood(key, adress, storeName, goodFoodName, badFoodName, evaluate, date, star, line, image);
         m_dicOutFood[key] = food;
-        //更新json数据
-        if (m_outFoodJsonData != null && m_outFoodJsonData[key] != null)
+        int index = 0;
+        IEnumerator ite = m_outFoodJsonData.Keys.GetEnumerator();
+        while (ite.MoveNext())
         {
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()] = new JsonData();
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Adress.ToString()] = adress;
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.StoreName.ToString()] = storeName;
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.GoodFoodName.ToString()] = goodFoodName;
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.BadFoodName.ToString()] = badFoodName;
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Evaluate.ToString()] = evaluate;
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Date.ToString()] = date;
+            if (ite.Current.ToString() == key.ToString())
+            {
+                break;
+            }
+            index++;
+        }
+        //更新json数据
+        if (m_outFoodJsonData != null)
+        {
+            m_outFoodJsonData[index] = new JsonData();
+            m_outFoodJsonData[index][OutFoodJsonEm.Adress.ToString()] = adress;
+            m_outFoodJsonData[index][OutFoodJsonEm.StoreName.ToString()] = storeName;
+            m_outFoodJsonData[index][OutFoodJsonEm.GoodFoodName.ToString()] = goodFoodName;
+            m_outFoodJsonData[index][OutFoodJsonEm.BadFoodName.ToString()] = badFoodName;
+            m_outFoodJsonData[index][OutFoodJsonEm.Evaluate.ToString()] = evaluate;
+            m_outFoodJsonData[index][OutFoodJsonEm.Date.ToString()] = date;
             //限制在0-5分内
             if (star < 0)
             {
@@ -270,9 +280,9 @@ public class OutFoodModel : Model
             {
                 star = 5;
             }
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Star.ToString()] = star.ToString();
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Line.ToString()] = line;
-            m_outFoodJsonData[key][V_OutFoodMaxIndex.ToString()][OutFoodJsonEm.Image.ToString()] = image;
+            m_outFoodJsonData[index][OutFoodJsonEm.Star.ToString()] = star.ToString();
+            m_outFoodJsonData[index][OutFoodJsonEm.Line.ToString()] = line;
+            m_outFoodJsonData[index][OutFoodJsonEm.Image.ToString()] = image;
         }
         //写到本地
         JsonParse.SaveJsonDataToLocal(m_outFoodJsonData, SysDefine.OutFoodJsonName);
