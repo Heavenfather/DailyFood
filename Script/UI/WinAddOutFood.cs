@@ -244,6 +244,7 @@ public class WinAddOutFood : BaseUIForms
 
                 //关闭添加菜单界面
                 CloseUIForm(GetWinType());
+                EventMgr.GetInstance().NotifireEvent(EventName.Event_RefreshOutFoodData,m_foodData.V_Key);
             });
         }
         else

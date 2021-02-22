@@ -53,7 +53,6 @@ public class UIManager : MonoBehaviour
         //字段初始化
         _DicAllUiFormses = new Dictionary<EM_WinType, BaseUIForms>();
         _DicCurrentUIForm = new Dictionary<EM_WinType, BaseUIForms>();
-        // _StaCurrentUIForm = new Stack<BaseUIForms>();
     }
 
     //初始化核心数据，加载“UI窗体路径”到集合中
@@ -201,11 +200,15 @@ public class UIManager : MonoBehaviour
                 LogMgr.GetInstance().Log(LogEnum.Error, "baseUIForms为空，请先确认窗体预设对象是否已经加载了子类脚本,UIFormName=" + winType.ToString());
                 return null;
             }
-            
+
             if (baseUiForms.GetUIType() == UIFormType.Full)
+            {
                 goCloneUIPrefab.transform.SetParent(_TraNormal, false);
+            }
             else if (baseUiForms.GetUIType() == UIFormType.PopUp)
+            {
                 goCloneUIPrefab.transform.SetParent(_TraPopUp, false);
+            }
 
             //设置隐藏   初始时应该是隐藏的，因为不知道需不需要一开始就显示
             goCloneUIPrefab.SetActive(false);
@@ -244,7 +247,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-   
+
     /// <summary>
     /// 普通窗体关闭
     /// </summary>

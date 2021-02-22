@@ -53,7 +53,7 @@ public class WinOutFoodMain : BaseUIForms
         WinRandomOutFood randomPanel = UIManager.GetInstance().GetWinForm(EM_WinType.WinRandomOutFood) as WinRandomOutFood;
         if (randomPanel != null)
         {
-            randomPanel.Init(food);
+            randomPanel.Init(food.V_Key);
         }
     }
 

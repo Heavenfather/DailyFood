@@ -50,7 +50,7 @@ public abstract class BaseUIForms : MonoBehaviour
         //设置UI遮罩
         if (GetUIType() == UIFormType.PopUp)
         {
-            UIMaskManager.GetInstance().SetMaskWindow(this.gameObject, CurrentUIType.UIForm_Luceny);
+            UIMaskManager.GetInstance().SetMaskWindow(this, CurrentUIType.UIForm_Luceny);
         }
         if (m_btnClose != null && OnCloseAction == null)
         {
@@ -67,12 +67,10 @@ public abstract class BaseUIForms : MonoBehaviour
     /// </summary>
     public virtual void Hiding()
     {
-        // this.gameObject.SetActive(false);
-
         //取消UI遮罩
         if (GetUIType() == UIFormType.PopUp)
         {
-            UIMaskManager.GetInstance().CancelMaskWindow();
+            UIMaskManager.GetInstance().CancelMaskWindow(this);
         }
         if (m_btnClose != null && OnCloseAction == null)
         {

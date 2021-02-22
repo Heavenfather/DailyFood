@@ -24,7 +24,7 @@ public class FoodSearchCell : MonoBehaviour
         WinRandomOutFood randomPanel = UIManager.GetInstance().GetWinForm(EM_WinType.WinRandomOutFood) as WinRandomOutFood;
         if (randomPanel != null)
         {
-            randomPanel.Init(m_data);
+            randomPanel.Init(m_data.V_Key);
         }
     }
 }

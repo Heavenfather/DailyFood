@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Manager;
+using System;
 
 public class WinRandomOutFood : BaseUIForms
 {
@@ -30,17 +31,33 @@ public class WinRandomOutFood : BaseUIForms
         return UIFormType.PopUp;
     }
 
-    public void Init(OutFood food)
+    private void Start()
     {
-        //根据key来实时取数据比较安       
-        m_data = OutFoodMgr.GetInstance().Model.GetOutFoodInfoByKey(food.V_Key);
-        m_txtStoreName.text = food.V_StoreName;
-        m_txtAdress.text = food.V_Adress;
-        m_txtStar.text = food.V_Star.ToString();
-        m_txtTotalPrice.text = food.GetTotalPrice() + "";
+        BindEvent(EventName.Event_RefreshOutFoodData, Refresh);
+    }
+
+    private void OnDestroy()
+    {
+        UnBindEvent(EventName.Event_RefreshOutFoodData, Refresh);
+    }
+
+    private void Refresh(object[] args)
+    {
+        int key = (int)args[0];
+        Init(key);
+    }
+
+    public void Init(int key)
+    {
+        //根据key来实时取数据
+        m_data = OutFoodMgr.GetInstance().Model.GetOutFoodInfoByKey(key);
+        m_txtStoreName.text = m_data.V_StoreName;
+        m_txtAdress.text = m_data.V_Adress;
+        m_txtStar.text = m_data.V_Star.ToString();
+        m_txtTotalPrice.text = m_data.GetTotalPrice() + "";
         string foodName = "";
-        string[] goodFoods = food.V_GoodFoodName.Split(';');
-        string[] badFoods = food.V_BadFoodName.Split(';');
+        string[] goodFoods = m_data.V_GoodFoodName.Split(';');
+        string[] badFoods = m_data.V_BadFoodName.Split(';');
 
         for (int i = 0; i < goodFoods.Length; i++)
         {

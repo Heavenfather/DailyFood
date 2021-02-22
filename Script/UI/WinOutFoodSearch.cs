@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Manager;
@@ -40,6 +41,17 @@ public class WinOutFoodSearch : BaseUIForms
 
     private void Start()
     {
+        BindEvent(EventName.Event_RefreshOutFoodData, Refresh);
+        Refresh(null);
+    }
+
+    private void OnDestroy()
+    {
+        UnBindEvent(EventName.Event_RefreshOutFoodData, Refresh);
+    }
+
+    private void Refresh(object[] args)
+    {
         //初始创建所有的数据出来
         List<OutFood> lst = new List<OutFood>();
         Dictionary<int, OutFood> foods = OutFoodMgr.GetInstance().Model.GetAllOutFood();
@@ -49,7 +61,6 @@ public class WinOutFoodSearch : BaseUIForms
         }
         m_curSearchOutFood = lst;
         RefreshCells(lst);
-
     }
 
     public void OnSearchClick()
