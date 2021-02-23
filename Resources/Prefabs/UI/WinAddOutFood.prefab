@@ -357,6 +357,8 @@ MonoBehaviour:
   - 2024
   m_btnComfirmAdd: {fileID: 29887230155942487}
   m_btnComfirmChange: {fileID: 4126241433477176089}
+  m_imgCell: {fileID: 4360947883568281228}
+  m_imgCellParent: {fileID: 6246680395536245488}
 --- !u!1 &29887231555655777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,7 +1039,7 @@ GameObject:
   - component: {fileID: 494951113814232530}
   - component: {fileID: 3388154318428396014}
   m_Layer: 5
-  m_Name: AddImage
+  m_Name: BtnAddImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1147,7 +1149,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1594693420271580379}
         m_TargetAssemblyTypeName: WinAddOutFood, Assembly-CSharp
-        m_MethodName: OnAddOneFoodClick
+        m_MethodName: OnAddImageClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1775,7 +1777,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7596281681213144279}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2933771487695111112}
+        m_TargetAssemblyTypeName: ImageCell, Assembly-CSharp
+        m_MethodName: OnDeleteClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1568032515454538017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2083,7 +2097,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6838717456529045618}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2933771487695111112}
+        m_TargetAssemblyTypeName: ImageCell, Assembly-CSharp
+        m_MethodName: OnCheckClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1825345607113750849
 GameObject:
   m_ObjectHideFlags: 0
@@ -3912,6 +3938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3011fc0ccf77bc9408ae8571f2254e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_img: {fileID: 3286766338504570151}
 --- !u!1 &4396479204258230218
 GameObject:
   m_ObjectHideFlags: 0

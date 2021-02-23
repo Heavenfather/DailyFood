@@ -37,7 +37,6 @@ namespace SUIFW
             {
                 return ht[path] as T;
             }
-
             T TResource = Resources.Load<T>(path);
             if (TResource == null)
             {
@@ -66,6 +65,7 @@ namespace SUIFW
                 LogMgr.GetInstance().Log(LogEnum.Error, "克隆资源不成功，请检查。 path=" + path);
             }
             return goObjClone;
-        }
+        }        
+
     }
 }

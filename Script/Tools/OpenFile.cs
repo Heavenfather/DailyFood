@@ -37,18 +37,20 @@ public class OpenFile : MonoBehaviour
                     continue;
                 int index = files[i].Name.LastIndexOf('.');
                 string key = files[i].Name.Remove(index);
-
-                StartCoroutine(LoadSpriteAsync(key, (obj) =>
+                //没有缓存过的才请求加载
+                if (!m_dicCachSprite.ContainsKey(key))
                 {
-                    Sprite sp = obj as Sprite;
-                    if (sp == null)
-                        return;
-                    if (!m_dicCachSprite.ContainsKey(key))
+                    StartCoroutine(LoadSpriteAsync(key, (obj) =>
                     {
+                        Sprite sp = obj as Sprite;
+                        if (sp == null)
+                            return;
                         m_dicCachSprite.Add(key, sp);
-                    }
-                }));
+
+                    }));
+                }
             }
+            ConfigMgr.GetInstance().V_MaxImageIndex = m_dicCachSprite.Count;
         }
         else
         {
@@ -62,7 +64,11 @@ public class OpenFile : MonoBehaviour
         Transform scriptHolder = UnityHelper.FindTheChildNode(tran.gameObject, SysDefine.SYS_NODE_SCRIPTSMANAGER);
         this.gameObject.transform.SetParent(scriptHolder);
     }
-
+    /// <summary>
+    /// 打开window面板选择图片文件并且copy图片到指定目录下
+    /// </summary>
+    /// <param name="saveName"></param>
+    /// <param name="callback"></param>
     public void OpenDialogAndCopyImage(string saveName, Action<UnityEngine.Object> callback)
     {
         OpenFileName ofn = new OpenFileName();
@@ -142,6 +148,11 @@ public class OpenFile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 获取缓存的图片资源
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public Sprite GetSpriteByName(string name)
     {
         if (m_dicCachSprite.ContainsKey(name))
@@ -153,6 +164,20 @@ public class OpenFile : MonoBehaviour
             //没有图片
             LogMgr.GetInstance().Log(LogEnum.Error, "未缓存到图片:" + name);
             return null;
+        }
+    }
+
+    public void DeleteImage(string name)
+    {
+        string path = PathMgr.GetInstance().ImagePath + name;
+        if (m_dicCachSprite.ContainsKey(name))
+        {
+            m_dicCachSprite.Remove(name);
+            File.Delete(path);
+        }
+        else
+        {
+            LogMgr.GetInstance().Log(LogEnum.Warming, "没有缓存的图片，怎么删除呢：" + path);
         }
     }
 

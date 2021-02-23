@@ -21,6 +21,8 @@ namespace Manager
         /// <returns></returns>
         private Dictionary<ConfigEm, string> m_dicConfig = new Dictionary<ConfigEm, string>();
 
+        private int v_MaxImageIndex = 0;
+
         public bool V_IsOpenDebugger
         {
             get
@@ -31,6 +33,12 @@ namespace Manager
                 return false;
             }
         }
+
+        /// <summary>
+        /// 保存图片的最大索引(图片名称)
+        /// </summary>
+        /// <value></value>
+        public int V_MaxImageIndex { get => v_MaxImageIndex; set => v_MaxImageIndex = value; }
 
         private static readonly string CONFIGJSON = "/config.json";
 

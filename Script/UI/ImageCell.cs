@@ -8,9 +8,22 @@ public class ImageCell : MonoBehaviour
     [SerializeField]
     Image m_img;
 
-    public void SetImage(string spriteName)
+    private Sprite m_sp;
+    private string m_imgName;
+    private UnityEngine.Object m_Panel;
+
+    public void SetImage(string name, UnityEngine.Object panel)
     {
-        // m_img.sprite=
+        Sprite sp = OpenFile.GetInstance().GetSpriteByName(name);
+        if (sp != null)
+        {
+            m_img.sprite = sp;
+            m_imgName = name;
+        }
+        if (panel != null)
+        {
+            m_Panel = panel;
+        }
     }
 
     public void OnCheckClick()
@@ -20,7 +33,11 @@ public class ImageCell : MonoBehaviour
 
     public void OnDeleteClick()
     {
-        
+        if (m_Panel != null)
+        {
+            WinAddOutFood win = m_Panel as WinAddOutFood;
+            win.DeleteOneImg(m_imgName);
+        }
     }
 
 }

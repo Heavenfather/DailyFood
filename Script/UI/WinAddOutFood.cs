@@ -32,8 +32,13 @@ public class WinAddOutFood : BaseUIForms
     GameObject m_btnComfirmAdd;
     [SerializeField]
     GameObject m_btnComfirmChange;
+    [SerializeField]
+    GameObject m_imgCell;
+    [SerializeField]
+    GameObject m_imgCellParent;
 
     private Dictionary<int, OutFoodPerCell> m_dicFoodCells = new Dictionary<int, OutFoodPerCell>();
+    private Dictionary<string, ImageCell> m_dicImgCells = new Dictionary<string, ImageCell>();
     /// <summary>
     /// 添加菜的临时id
     /// </summary>
@@ -43,6 +48,7 @@ public class WinAddOutFood : BaseUIForms
     /// </summary>
     private OutFood m_foodData = null;
     private bool m_isChange = false;
+    private string m_imageName = "";
 
     private void Start()
     {
@@ -91,6 +97,7 @@ public class WinAddOutFood : BaseUIForms
         m_inputLine.text = data.V_Line;
         m_inputStar.text = data.V_Star + "";
         m_inputStoreName.text = data.V_StoreName;
+        m_imageName = data.V_Iamge;
         int yearIndex = 0;
         for (int i = 0; i < m_Years.Count; i++)
         {
@@ -135,6 +142,22 @@ public class WinAddOutFood : BaseUIForms
                 cell.Init(m_tempId, foodStr[0], foodStr[1], false, this);
                 m_dicFoodCells.Add(m_tempId, cell);
                 m_tempId++;
+            }
+        }
+        //图片
+        string[] imagename = m_imageName.Split(';');
+        for (int i = 0; i < imagename.Length; i++)
+        {
+            if (string.IsNullOrEmpty(imagename[i]))
+                continue;
+            GameObject go = Instantiate(m_imgCell, m_imgCellParent.transform);
+            go.SetActive(true);
+            ImageCell cell = go.GetComponent<ImageCell>();
+            if (cell != null)
+            {
+                cell.SetImage(imagename[i], this);
+                if (!m_dicImgCells.ContainsKey(imagename[i]))
+                    m_dicImgCells.Add(imagename[i], cell);
             }
         }
 
@@ -191,6 +214,31 @@ public class WinAddOutFood : BaseUIForms
         }
     }
 
+    public void DeleteOneImg(string name)
+    {
+        ImageCell cell = null;
+        if (m_dicImgCells.TryGetValue(name, out cell))
+        {
+            m_imageName = m_imageName.Replace(name + ";", "");
+            m_dicImgCells.Remove(name);
+            GameObject.Destroy(cell.gameObject);
+        }
+    }
+
+    private void AddImg(string name)
+    {
+        GameObject go = Instantiate(m_imgCell, m_imgCellParent.transform);
+        go.SetActive(true);
+        ImageCell cell = go.GetComponent<ImageCell>();
+        if (cell != null)
+        {
+            cell.SetImage(name, this);
+            m_imageName += name + ";";
+            if (!m_dicImgCells.ContainsKey(name))
+                m_dicImgCells.Add(name, cell);
+        }
+    }
+
     public void OnComfirmClick()
     {
         //检查参数
@@ -236,22 +284,23 @@ public class WinAddOutFood : BaseUIForms
         {
             badFood = badFood.TrimEnd(';');
         }
+        string imgName = m_imageName;
         if (m_isChange)
         {
             UnityHelper.OpenAtlerWin("确定修改?", () =>
             {
-                OutFoodMgr.GetInstance().Model.UpdateFoodData(m_foodData.V_Key, adress, storeName, goodFood, badFood, evaluate, year + "-" + month, star, line, "");
+                OutFoodMgr.GetInstance().Model.UpdateFoodData(m_foodData.V_Key, adress, storeName, goodFood, badFood, evaluate, year + "-" + month, star, line, imgName);
 
                 //关闭添加菜单界面
                 CloseUIForm(GetWinType());
-                EventMgr.GetInstance().NotifireEvent(EventName.Event_RefreshOutFoodData,m_foodData.V_Key);
+                EventMgr.GetInstance().NotifireEvent(EventName.Event_RefreshOutFoodData, m_foodData.V_Key);
             });
         }
         else
         {
             UnityHelper.OpenAtlerWin("确定添加?", () =>
             {
-                OutFoodMgr.GetInstance().Model.AddOutFood(adress, storeName, goodFood, badFood, evaluate, year + "-" + month, star, line, "");
+                OutFoodMgr.GetInstance().Model.AddOutFood(adress, storeName, goodFood, badFood, evaluate, year + "-" + month, star, line, imgName);
 
                 //关闭添加菜单界面
                 CloseUIForm(GetWinType());
@@ -263,6 +312,21 @@ public class WinAddOutFood : BaseUIForms
     {
         //添加一道菜
         OpenUIForm(EM_WinType.AddFoodPanel);
+    }
+
+    public void OnAddImageClick()
+    {
+        OpenFile.GetInstance().OpenDialogAndCopyImage(ConfigMgr.GetInstance().V_MaxImageIndex.ToString(), (obj) =>
+        {
+            if (obj == null)
+                return;
+            Sprite sp = obj as Sprite;
+            //创建图片cell
+            AddImg(ConfigMgr.GetInstance().V_MaxImageIndex.ToString());
+            //图片加载成功了，索引也需要增加
+            ConfigMgr.GetInstance().V_MaxImageIndex++;
+
+        });
     }
 
 }
